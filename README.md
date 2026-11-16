@@ -1,21 +1,20 @@
 # Libroverso
 
-Aplicación web que fomenta el hábito de la lectura mediante
-un sistema de gamificación. Los usuarios podrán registrar sus
-lecturas, ganar experiencia, subir de nivel y personalizar
-su personaje con recompensas virtuales.
+Libroverso es una aplicación web que fomenta el hábito de la lectura mediante un sistema de gamificación. Los usuarios podrán registrar sus lecturas, ganar experiencia, subir de nivel y personalizar su personaje con recompensas virtuales.
 
 ## Autoría
 
-- Ciclo: 2.º DAW Virtual
 - Autora: Raquel Díaz Carrasco
+- Familia profesional: Informática y Comunicaciones
+- Ciclo formativo: Grado Superior en Desarrollo de Aplicaciones Web
+- Curso: 2.º DAW Virtual
 - Centro: CIFP Avilés
 - Curso académico: 2026/2027
 
 ## Tecnologías previstas
 
 - Backend: PHP y Laravel
-- Frontend: Vue.js
+- Frontend: Vue.js, HTML, CSS y JavaScript
 - Base de datos: MySQL
 - ORM y migraciones: Eloquent
 - Control de versiones: Git y GitHub
@@ -36,4 +35,8 @@ su personaje con recompensas virtuales.
 
 ## Tablero del proyecto
 
-Tablero estilo Kanban: https://github.com/users/Radizcal/projects/1/views/1
+La planificación y seguimiento del desarrollo se realizan mediante un tablero Kanban de GitHub Projects.
+
+Tablero: https://github.com/users/Radizcal/projects/1/views/1
+
+Repositorio: https://github.com/Radizcal/daw-proyecto-libroverso
