@@ -43,6 +43,10 @@ El campo `password` almacena el hash de la contraseña, nunca la contraseña ori
 
 El nombre de usuario no podrá modificarse una vez creada la cuenta. Esta condición se controlará desde la lógica de la aplicación.
 
+Se incorpora el campo `email` para almacenar la dirección de correo electrónico asociada a cada cuenta. Este campo será obligatorio y único, evitando que diferentes usuarios compartan la misma dirección de correo electrónico.
+
+Aunque se almacena el correo electrónico, el sistema de autenticación utilizará exclusivamente el nombre de usuario (`name`) y la contraseña (`password`).
+
 ### 3.2. Tabla `books`
 
 Almacena el catálogo de libros disponible en Libroverso.
