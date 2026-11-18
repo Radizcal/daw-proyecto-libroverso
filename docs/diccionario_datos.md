@@ -52,7 +52,7 @@
 
 - | id | BIGINT | PK, autoincremental | Identificador único del personaje. |
 - | user_id | BIGINT | FK, NOT NULL, UNIQUE | Usuario propietario del personaje. |
-- | level | INT | NOT NULL, DEFAULT 0 | Nivel actual del personaje. |
+- | level | INT | NOT NULL, DEFAULT 1 | Nivel actual del personaje. |
 - | experience | INT | NOT NULL, DEFAULT 0 | Experiencia acumulada. |
 - | coins | INT | NOT NULL, DEFAULT 0 | Monedas virtuales disponibles. |
 - | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
