@@ -40,3 +40,21 @@ La planificación y seguimiento del desarrollo se realizan mediante un tablero K
 Tablero: https://github.com/users/Radizcal/projects/1/views/1
 
 Repositorio: https://github.com/Radizcal/daw-proyecto-libroverso
+
+## Reconstrucción de la base de datos
+
+El proyecto utiliza migraciones de Laravel y seeders para crear la estructura de la base de datos e insertar los datos iniciales de prueba.
+
+Para reconstruir la base de datos desde cero, se debe ejecutar el siguiente comando desde la raíz del proyecto:
+
+composer db:reset
+
+Este comando realiza automáticamente las siguientes operaciones:
+
+Elimina las tablas existentes de la base de datos.
+
+Ejecuta todas las migraciones para crear de nuevo las tablas.
+
+Ejecuta los seeders para insertar los datos iniciales de prueba.
+
+Importante: este comando elimina los datos existentes de la base de datos antes de reconstruirla. Debe utilizarse teniendo en cuenta que cualquier dato que no esté incluido en los seeders se perderá.
