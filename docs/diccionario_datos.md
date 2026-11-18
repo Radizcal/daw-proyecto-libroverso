@@ -6,6 +6,7 @@
 
 - | id | BIGINT | PK, autoincremental | Identificador único del usuario. |
 - | name | VARCHAR(100) | NOT NULL, UNIQUE | Nombre de usuario, único y no modificable. |
+- | email | VARCHAR(255) | NOT NULL, UNIQUE | Correo electrónico asociado a la cuenta. |
 - | password | VARCHAR(255) | NOT NULL | Contraseña almacenada mediante un hash seguro. |
 - | role | VARCHAR(20) | NOT NULL, DEFAULT 'user' | Rol del usuario: user o admin. |
 - | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
