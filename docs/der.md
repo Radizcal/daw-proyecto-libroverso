@@ -29,20 +29,11 @@ El modelo contempla las siguientes relaciones:
 
 <img width="1536" height="1024" alt="Diagrama DER de Libroverso" src="https://github.com/user-attachments/assets/869f87b1-0cf3-4d6e-8f5d-fd3950ebdb5b" />
 
-## 3. Diccionario de datos
+## 3. Tablas
 
 ### 3.1. Tabla `users`
 
 Almacena la información de los usuarios registrados en la aplicación.
-
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador único del usuario. |
-- | name | VARCHAR(100) | NOT NULL, UNIQUE | Nombre de usuario, único y no modificable. |
-- | password | VARCHAR(255) | NOT NULL | Contraseña almacenada mediante un hash seguro. |
-- | role | VARCHAR(20) | NOT NULL, DEFAULT 'user' | Rol del usuario: user o admin. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
 
 **Justificación:**
 
@@ -56,15 +47,6 @@ El nombre de usuario no podrá modificarse una vez creada la cuenta. Esta condic
 
 Almacena el catálogo de libros disponible en Libroverso.
 
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador único del libro. |
-- | title | VARCHAR(200) | NOT NULL | Título del libro. |
-- | author | VARCHAR(150) | NOT NULL | Autor del libro. |
-- | total_pages | INT | NOT NULL | Número total de páginas. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
-
 **Justificación:**
 
 Esta tabla almacena los datos generales de cada libro, independientemente de los usuarios que lo tengan en su biblioteca.
@@ -76,17 +58,6 @@ El número total de páginas deberá ser mayor que cero.
 ### 3.3. Tabla `user_books`
 
 Es la tabla intermedia que relaciona a los usuarios con los libros de su biblioteca personal. Resuelve la relación muchos a muchos (M:N) entre `users` y `books`.
-
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador del registro. |
-- | user_id | BIGINT | FK, NOT NULL | Usuario propietario del libro. |
-- | book_id | BIGINT | FK, NOT NULL | Libro añadido a la biblioteca. |
-- | started_at | DATE | NULL | Fecha en la que comenzó a leerlo. |
-- | status | VARCHAR(20) | NOT NULL, DEFAULT 'reading' | Estado del libro: reading, paused o completed. |
-- | completed_at | DATE | NULL | Fecha en la que terminó el libro. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
 
 **Restricciones adicionales:**
 
@@ -108,15 +79,6 @@ El progreso de páginas se calculará a partir de las sesiones de lectura asocia
 
 Almacena las sesiones de lectura realizadas por los usuarios.
 
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador único de la sesión. |
-- | user_book_id | BIGINT | FK, NOT NULL | Referencia al libro de la biblioteca personal. |
-- | pages_read | INT | NOT NULL | Número de páginas leídas durante la sesión. |
-- | read_at | DATETIME | NOT NULL | Fecha y hora de la sesión. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
-
 **Justificación:**
 
 Esta tabla permite conservar un historial de las sesiones de lectura de cada usuario.
@@ -131,16 +93,6 @@ El campo `pages_read` deberá ser mayor que cero y la aplicación comprobará qu
 
 Almacena los datos del personaje asociado a cada usuario.
 
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador único del personaje. |
-- | user_id | BIGINT | FK, NOT NULL, UNIQUE | Usuario propietario del personaje. |
-- | level | INT | NOT NULL, DEFAULT 0 | Nivel actual del personaje. |
-- | experience | INT | NOT NULL, DEFAULT 0 | Experiencia acumulada. |
-- | coins | INT | NOT NULL, DEFAULT 0 | Monedas virtuales disponibles. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
-
 **Justificación:**
 
 Cada usuario dispone de un único personaje que representa su progreso dentro de Libroverso.
@@ -153,16 +105,6 @@ La relación entre `users` y `characters` es uno a uno (1:1). La restricción UN
 
 Almacena el catálogo de elementos estéticos que pueden adquirirse para personalizar los personajes.
 
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador único del elemento. |
-- | name | VARCHAR(100) | NOT NULL | Nombre del elemento estético. |
-- | description | VARCHAR(255) | NULL | Descripción del elemento. |
-- | category | VARCHAR(50) | NOT NULL | Categoría del elemento. |
-- | price | INT | NOT NULL | Precio expresado en monedas virtuales. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
-
 **Justificación:**
 
 Esta tabla contiene el catálogo de elementos estéticos disponibles en la aplicación, como accesorios, ropa o fondos.
@@ -174,16 +116,6 @@ La categoría permitirá clasificar los elementos para facilitar su selección y
 ### 3.7. Tabla `inventory_items`
 
 Relaciona los personajes con los elementos estéticos que han adquirido.
-
-| Campo | Tipo de dato | Restricciones | Descripción |
-
-- | id | BIGINT | PK, autoincremental | Identificador del registro del inventario. |
-- | character_id | BIGINT | FK, NOT NULL | Personaje propietario del elemento. |
-- | cosmetic_item_id | BIGINT | FK, NOT NULL | Elemento estético adquirido. |
-- | acquired_at | DATETIME | NOT NULL | Fecha de adquisición. |
-- | is_equipped | BOOLEAN | NOT NULL, DEFAULT FALSE | Indica si el elemento está equipado. |
-- | created_at | TIMESTAMP | NULL | Fecha de creación del registro. |
-- | updated_at | TIMESTAMP | NULL | Fecha de última modificación. |
 
 **Restricciones adicionales:**
 
@@ -200,15 +132,6 @@ Resuelve una relación muchos a muchos (M:N) entre personajes y elementos estét
 Incluye atributos propios de la relación, como la fecha de adquisición y si el elemento está equipado.
 
 ## 4. Resumen de relaciones y cardinalidades
-
-| Relación | Cardinalidad | Explicación |
-
-- | users - user_books | 1:N | Un usuario puede tener varios libros en su biblioteca. |
-- | books - user_books | 1:N | Un libro puede aparecer en las bibliotecas de varios usuarios. |
-- | user_books - reading_sessions | 1:N | Un libro de la biblioteca puede tener varias sesiones de lectura. |
-- | users - characters | 1:1 | Cada usuario dispone de un único personaje. |
-- | characters - inventory_items | 1:N | Un personaje puede tener varios elementos en su inventario. |
-- | cosmetic_items - inventory_items | 1:N | Un elemento estético puede aparecer en varios inventarios. |
 
 Las relaciones muchos a muchos se resuelven mediante tablas intermedias:
 
