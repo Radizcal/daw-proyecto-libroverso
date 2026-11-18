@@ -27,7 +27,7 @@ El modelo contempla las siguientes relaciones:
 + Un personaje puede tener varios elementos en su inventario.
 + Un elemento estético puede pertenecer al inventario de distintos personajes.
 
-<img width="1536" height="1024" alt="Diagrama DER de Libroverso" src="https://github.com/user-attachments/assets/869f87b1-0cf3-4d6e-8f5d-fd3950ebdb5b" />
+<img width="1535" height="1024" alt="der" src="https://github.com/user-attachments/assets/a5e9c1a3-fa80-4b6a-aa21-4604687214d7" />
 
 ## 3. Tablas
 
