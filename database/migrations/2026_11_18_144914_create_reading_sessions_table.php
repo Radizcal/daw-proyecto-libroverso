@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -24,9 +23,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement(
-            'ALTER TABLE reading_sessions ADD CONSTRAINT chk_reading_sessions_pages_read CHECK (pages_read > 0)'
-        );
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement(
+                'ALTER TABLE reading_sessions ADD CONSTRAINT chk_reading_sessions_pages_read CHECK (pages_read > 0)'
+            );
+        }
     }
 
     public function down(): void

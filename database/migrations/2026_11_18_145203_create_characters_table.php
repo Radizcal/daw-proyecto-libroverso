@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -27,17 +26,19 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement(
-            'ALTER TABLE characters ADD CONSTRAINT chk_characters_level CHECK (level >= 1)'
-        );
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement(
+                'ALTER TABLE characters ADD CONSTRAINT chk_characters_level CHECK (level >= 1)'
+            );
 
-        DB::statement(
-            'ALTER TABLE characters ADD CONSTRAINT chk_characters_experience CHECK (experience >= 0)'
-        );
+            DB::statement(
+                'ALTER TABLE characters ADD CONSTRAINT chk_characters_experience CHECK (experience >= 0)'
+            );
 
-        DB::statement(
-            'ALTER TABLE characters ADD CONSTRAINT chk_characters_coins CHECK (coins >= 0)'
-        );
+            DB::statement(
+                'ALTER TABLE characters ADD CONSTRAINT chk_characters_coins CHECK (coins >= 0)'
+            );
+        }
     }
 
     public function down(): void

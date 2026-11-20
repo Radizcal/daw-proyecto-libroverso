@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -32,9 +31,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement(
-            "ALTER TABLE user_books ADD CONSTRAINT chk_user_books_status CHECK (status IN ('reading', 'paused', 'completed'))"
-        );
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement(
+                "ALTER TABLE user_books ADD CONSTRAINT chk_user_books_status CHECK (status IN ('reading', 'paused', 'completed'))"
+            );
+        }
     }
 
     public function down(): void
