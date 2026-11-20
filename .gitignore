@@ -47,3 +47,10 @@ Homestead.yaml
 
 # Caché generada por Laravel
 /bootstrap/cache/*.php
+
+# Archivos temporales generados por Laravel
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/logs/*

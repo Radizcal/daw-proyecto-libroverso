@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -22,9 +21,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement(
-            'ALTER TABLE cosmetic_items ADD CONSTRAINT chk_cosmetic_items_price CHECK (price >= 0)'
-        );
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement(
+                'ALTER TABLE cosmetic_items ADD CONSTRAINT chk_cosmetic_items_price CHECK (price >= 0)'
+            );
+        }
     }
 
     public function down(): void

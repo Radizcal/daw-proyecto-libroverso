@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -18,9 +17,11 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::statement(
-            'ALTER TABLE books ADD CONSTRAINT chk_books_total_pages CHECK (total_pages > 0)'
-        );
+        if (DB::connection()->getDriverName() === 'mysql') {
+            DB::statement(
+                'ALTER TABLE books ADD CONSTRAINT chk_books_total_pages CHECK (total_pages > 0)'
+            );
+        }
     }
 
     public function down(): void

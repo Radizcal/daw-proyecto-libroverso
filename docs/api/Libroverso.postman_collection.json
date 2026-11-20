@@ -1,0 +1,838 @@
+{
+    "info": {
+        "name": "Libroverso API",
+        "description": "Colección de pruebas de la API REST de Libroverso. Utiliza Laravel Sanctum mediante sesiones y cookies.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "noauth"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://127.0.0.1:8000",
+            "type": "string"
+        },
+        {
+            "key": "csrfToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "userBookId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "bookId",
+            "value": "1",
+            "type": "string"
+        },
+        {
+            "key": "inventoryItemId",
+            "value": "2",
+            "type": "string"
+        },
+        {
+            "key": "username",
+            "value": "admin",
+            "type": "string"
+        },
+        {
+            "key": "password",
+            "value": "admin123",
+            "type": "string"
+        }
+    ],
+    "item": [
+        {
+            "name": "Autenticación",
+            "item": [
+                {
+                    "name": "Obtener cookie CSRF",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/sanctum/csrf-cookie",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "sanctum",
+                                "csrf-cookie"
+                            ]
+                        },
+                        "description": "Obtiene las cookies necesarias para la autenticación mediante sesiones de Laravel Sanctum."
+                    },
+                    "response": [],
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const xsrfCookie = pm.cookies.get('XSRF-TOKEN');",
+                                    "if (xsrfCookie) {",
+                                    "    pm.collectionVariables.set('csrfToken', decodeURIComponent(xsrfCookie));",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Iniciar sesión",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "login"
+                            ]
+                        },
+                        "description": "Inicia sesión mediante Laravel Sanctum. Requiere obtener previamente la cookie CSRF."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Cerrar sesión",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/logout",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "logout"
+                            ]
+                        },
+                        "description": "Cierra la sesión del usuario autenticado e invalida su sesión actual."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Libros",
+            "item": [
+                {
+                    "name": "Listar libros",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/books",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "books"
+                            ]
+                        },
+                        "description": "Obtiene el catálogo completo de libros. Requiere autenticación."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Consultar libro",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/books/{{bookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "books",
+                                "{{bookId}}"
+                            ]
+                        },
+                        "description": "Obtiene los datos de un libro concreto del catálogo."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Crear libro",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Libro de prueba\",\n    \"author\": \"Autor de prueba\",\n    \"total_pages\": 250\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/books",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "books"
+                            ]
+                        },
+                        "description": "Crea un libro nuevo en el catálogo. Solo los administradores pueden realizar esta operación."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Actualizar libro (PUT)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Libro actualizado\",\n    \"author\": \"Autor actualizado\",\n    \"total_pages\": 300\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/books/{{bookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "books",
+                                "{{bookId}}"
+                            ]
+                        },
+                        "description": "Actualiza los datos del libro indicado. Solo los administradores pueden realizar esta operación."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Actualizar libro (PATCH)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"total_pages\": 320\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/books/{{bookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "books",
+                                "{{bookId}}"
+                            ]
+                        },
+                        "description": "Actualiza parcialmente los datos del libro indicado. Solo los administradores pueden realizar esta operación."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Eliminar libro",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/books/{{bookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "books",
+                                "{{bookId}}"
+                            ]
+                        },
+                        "description": "Elimina el libro indicado del catálogo. Solo los administradores pueden realizar esta operación."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Mi biblioteca",
+            "item": [
+                {
+                    "name": "Listar mi biblioteca",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/my-books",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "my-books"
+                            ]
+                        },
+                        "description": "Obtiene los libros de la biblioteca personal del usuario autenticado."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Consultar libro de mi biblioteca",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/my-books/{{userBookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "my-books",
+                                "{{userBookId}}"
+                            ]
+                        },
+                        "description": "Consulta una entrada de la biblioteca personal. El usuario solo puede acceder a sus propias entradas."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Añadir libro a mi biblioteca",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"book_id\": 1,\n    \"started_at\": \"2026-11-20\",\n    \"status\": \"reading\",\n    \"completed_at\": null\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/my-books",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "my-books"
+                            ]
+                        },
+                        "description": "Añade un libro del catálogo a la biblioteca personal del usuario autenticado."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Actualizar libro de mi biblioteca (PUT)",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"book_id\": 1,\n    \"started_at\": \"2026-11-20\",\n    \"status\": \"completed\",\n    \"completed_at\": \"2026-11-20\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/my-books/{{userBookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "my-books",
+                                "{{userBookId}}"
+                            ]
+                        },
+                        "description": "Actualiza los datos de una entrada de la biblioteca personal."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Actualizar libro de mi biblioteca (PATCH)",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"status\": \"paused\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/my-books/{{userBookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "my-books",
+                                "{{userBookId}}"
+                            ]
+                        },
+                        "description": "Actualiza parcialmente una entrada de la biblioteca personal."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Eliminar libro de mi biblioteca",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/my-books/{{userBookId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "my-books",
+                                "{{userBookId}}"
+                            ]
+                        },
+                        "description": "Elimina una entrada de la biblioteca personal del usuario autenticado."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Sesiones de lectura",
+            "item": [
+                {
+                    "name": "Listar mis sesiones de lectura",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/reading-sessions",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reading-sessions"
+                            ]
+                        },
+                        "description": "Obtiene las sesiones de lectura del usuario autenticado, correspondientes a sus propios libros."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Registrar sesión de lectura",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"user_book_id\": {{userBookId}},\n    \"pages_read\": 10,\n    \"read_at\": \"2026-11-20\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/reading-sessions",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "reading-sessions"
+                            ]
+                        },
+                        "description": "Registra una sesión de lectura. El libro debe pertenecer al usuario autenticado y las páginas registradas no pueden superar las páginas totales del libro."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Personaje",
+            "item": [
+                {
+                    "name": "Consultar mi personaje",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/character",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "character"
+                            ]
+                        },
+                        "description": "Obtiene el personaje asociado al usuario autenticado, incluyendo sus objetos de inventario."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Tienda",
+            "item": [
+                {
+                    "name": "Consultar catálogo de objetos cosméticos",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/cosmetic-items",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "cosmetic-items"
+                            ]
+                        },
+                        "description": "Obtiene el catálogo completo de objetos cosméticos. Requiere autenticación."
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Inventario",
+            "item": [
+                {
+                    "name": "Consultar mi inventario",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/inventory",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "inventory"
+                            ]
+                        },
+                        "description": "Obtiene los objetos del inventario del usuario autenticado, incluyendo los datos de cada objeto cosmético."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Comprar objeto cosmético",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"cosmetic_item_id\": 5\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/inventory",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "inventory"
+                            ]
+                        },
+                        "description": "Compra un objeto cosmético para el personaje del usuario autenticado. El objeto debe existir, no estar ya en su inventario y el usuario debe tener monedas suficientes. Devuelve 409 si ya posee el objeto o no tiene monedas suficientes."
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Equipar o desequipar objeto",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "X-XSRF-TOKEN",
+                                "value": "{{csrfToken}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"is_equipped\": true\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/inventory/{{inventoryItemId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "inventory",
+                                "{{inventoryItemId}}"
+                            ]
+                        },
+                        "description": "Actualiza el estado de equipamiento de un objeto que pertenece al inventario del usuario autenticado. is_equipped debe ser true para equiparlo o false para desequiparlo."
+                    },
+                    "response": []
+                }
+            ]
+        }
+    ]
+}
