@@ -1,4 +1,3 @@
-# Es solo un código de ejemplo
 
 # Dependencias PHP
 /vendor/
@@ -9,6 +8,7 @@
 # Archivos compilados
 /public/build/
 /public/hot
+/public/storage
 /dist/
 /build/
 
@@ -16,16 +16,41 @@
 .env
 .env.*
 !.env.example
+.env.backup
+.env.production
 
 # Logs y archivos temporales
 *.log
 /storage/*.key
+/storage/pail
 
-# Editor y sistema operativo
+# Caché y resultados de pruebas
+.phpunit.cache/
+.phpunit.result.cache
+
+# Herramientas y editores
 .vscode/
 .idea/
+.fleet/
+.nova/
+.zed/
+.phpactor.json
+/auth.json
+
+# Archivos del sistema operativo
 .DS_Store
 Thumbs.db
 
-# Caché de pruebas
-.phpunit.cache/
+# Configuración de Homestead
+Homestead.json
+Homestead.yaml
+
+# Caché generada por Laravel
+/bootstrap/cache/*.php
+
+# Archivos temporales generados por Laravel
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/logs/*
